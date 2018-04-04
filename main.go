@@ -45,16 +45,28 @@ func presentGitStatus(cfg Config) {
 	printMainTitle(cfg.Name)
 	printSubTitle(cfg.Dir)
 	gitfetch()
-	res := gitstatus()
-	fmt.Printf("\n###\n%v\n###\n", res)
+	gitstatus()
 }
 
-func gitstatus() string {
-	return git("status")
+func flatten(statusMsg string) string {
+	return strings.Replace(statusMsg, "\n", "", -1)
 }
 
-func gitfetch() string {
-	return git("fetch")
+func isDirClean(statusMsg string) bool {
+	return strings.Contains(flatten(statusMsg), "nothing to commit, working directory clean")
+}
+
+func gitstatus() {
+	cmdOut := git("status")
+	if isDirClean(cmdOut) {
+		fmt.Println("OK")
+	} else {
+		printBody(cmdOut)
+	}
+}
+
+func gitfetch() {
+	git("fetch")
 }
 
 func git(cmd string) string {
@@ -62,7 +74,6 @@ func git(cmd string) string {
 	checkErr(err)
 	cmdOut := string(cmdOutBytes)
 	printSubTitle(cmd)
-	printBody(cmdOut)
 	return cmdOut
 }
 
@@ -73,8 +84,8 @@ func cwd() {
 
 func printMainTitle(str string) {
 	// fmt.Printf("\n/////////////%v\n", str)
-	fmt.Printf("\n--------------------------------------------------\n%v", str)
-	fmt.Printf("\n--------------------------------------------------\n")
+	fmt.Printf("\n----------------------------------------------------------------------\n\t\t%v", str)
+	fmt.Printf("\n----------------------------------------------------------------------\n")
 }
 
 func printSubTitle(str string) {
