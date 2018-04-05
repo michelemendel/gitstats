@@ -66,8 +66,9 @@ func gitstatus(cfg Config) {
 	fmt.Printf("%v\n", cfg.Dir)
 
 	if isDirClean(cmdOut) {
-		fmt.Printf("OK\n")
+		fmt.Printf("%vOK\n%v", Green, AttrOff)
 	} else {
+		fmt.Printf("%vATTENTION\n%v", Red, AttrOff)
 		fmt.Printf("%v\n", cmdOut)
 	}
 }
@@ -84,20 +85,19 @@ func isDirClean(statusMsg string) bool {
 		strings.Contains(statusMsg, "clean")
 }
 
-func errFatal(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
 func homeDir() string {
 	user, err := user.Current()
 	errFatal(err)
 	return user.HomeDir
 }
 
+func errFatal(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func printMainTitle(str string) {
 	const w80 = "--------------------------------------------------------------------------------"
-	fmt.Printf("%v\n%v\n%v\n%v", Green, str, w80, AttrOff)
-	// fmt.Printf("\n%v\n%v", w80, Nocolor)
+	fmt.Printf("%v\n%v\n%v\n%v", Yellow+Bold, str, w80, AttrOff)
 }

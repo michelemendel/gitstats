@@ -31,7 +31,12 @@ package main
 
 // Text Attributes
 const (
-	AttrOff = "\033[0m"
+	AttrOff      = "\033[0m"
+	Bold         = "\033[1m"
+	Underscore   = "\033[4m"
+	Blink        = "\033[5m"
+	ReverseVideo = "\033[7m"
+	Concealed    = "\033[8m"
 )
 
 // Foreground Color
