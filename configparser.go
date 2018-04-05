@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -16,30 +17,58 @@ type Config struct {
 // Configs is a list of configurations.
 type Configs []Config
 
-// Parse returns a list of configurations.
-func Parse(filename string) Configs {
-
-	file, err := os.Open(filename)
-	if err != nil {
-		log.Fatal(err)
-	}
-
+// GetConfigs returns a list of configurations.
+func GetConfigs(filename string) Configs {
 	var cfgs Configs
+	file := getFile(filename)
 	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		s := strings.Fields(scanner.Text())
 
-		// There may be empty arrays.
-		if len(s) == 2 {
-			cfgs = append(cfgs, Config{s[0], s[1]})
-		} else if len(s) > 2 || len(s) == 1 {
-			log.Fatal("Error in config file. Check that each line has the key-value format.")
+	for scanner.Scan() {
+		fs := getFields(scanner)
+
+		if len(fs) == 2 && isDir(fs[1]) {
+			cfgs = append(cfgs, Config{fs[0], fs[1]})
+		} else if len(fs) > 2 || len(fs) == 1 { // There may be empty arrays, but they are ignored.
+			printWarning("Entry is not in correct key-value format", strings.Join(fs, " "))
 		}
 	}
+
 	if err := scanner.Err(); err != nil {
 		log.Fatal("Error reading standard input:", err)
 	}
 
+	fmt.Println("")
 	return cfgs
+}
 
+// Helper functions
+
+func getFile(filename string) *os.File {
+	file, err := os.Open(filename)
+	errFatal(err)
+	return file
+}
+
+func getFields(scanner *bufio.Scanner) []string {
+	line := strings.Trim(scanner.Text(), " ")
+
+	// Remove comments
+	if strings.HasPrefix(line, "#") {
+		return []string{}
+	}
+
+	return strings.Fields(line)
+}
+
+// If dir doesn't exists, don't add it
+func isDir(dirname string) bool {
+	if _, err := os.Stat(dirname); err != nil {
+		printWarning("Directory doesn't exists", dirname)
+		return false
+	}
+	return true
+}
+
+func printWarning(msg string, obj string) {
+	fmt.Printf("%v\nWARNING: %v (%v).%v", Red, msg, obj, AttrOff)
 }
