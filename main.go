@@ -80,9 +80,8 @@ func git(cmd string, dir string) string {
 }
 
 func isDirClean(statusMsg string) bool {
-	return strings.Contains(statusMsg, "nothing to commit") &&
-		strings.Contains(statusMsg, "working") &&
-		strings.Contains(statusMsg, "clean")
+	return !(strings.Contains(statusMsg, "git pull") ||
+		strings.Contains(statusMsg, "git add"))
 }
 
 func homeDir() string {
