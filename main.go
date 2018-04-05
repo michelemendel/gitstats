@@ -81,7 +81,8 @@ func git(cmd string, dir string) string {
 
 func isDirClean(statusMsg string) bool {
 	return !(strings.Contains(statusMsg, "git pull") ||
-		strings.Contains(statusMsg, "git add"))
+		strings.Contains(statusMsg, "git add") ||
+		strings.Contains(statusMsg, "git push"))
 }
 
 func homeDir() string {
