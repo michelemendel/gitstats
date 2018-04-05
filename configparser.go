@@ -37,11 +37,8 @@ func GetConfigs(filename string) Configs {
 		log.Fatal("Error reading standard input:", err)
 	}
 
-	fmt.Println("")
 	return cfgs
 }
-
-// Helper functions
 
 func getFile(filename string) *os.File {
 	file, err := os.Open(filename)
@@ -52,7 +49,7 @@ func getFile(filename string) *os.File {
 func getFields(scanner *bufio.Scanner) []string {
 	line := strings.Trim(scanner.Text(), " ")
 
-	// Remove comments
+	// Do not add comments
 	if strings.HasPrefix(line, "#") {
 		return []string{}
 	}
@@ -70,5 +67,5 @@ func isDir(dirname string) bool {
 }
 
 func printWarning(msg string, obj string) {
-	fmt.Printf("%v\nWARNING: %v (%v).%v", Red, msg, obj, AttrOff)
+	fmt.Printf("\n%vWARNING: %v (%v).%v", Red, msg, obj, AttrOff)
 }

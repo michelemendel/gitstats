@@ -22,8 +22,9 @@ const cfgFilenameDefault = "gitststatsdirs.cfg"
 func main() {
 	cfgFilename := getCfgFilename()
 	cfgs := GetConfigs(cfgFilename)
-	// printTableOfCfgs(cfgs)
+	// showTableOfCfgs(cfgs)
 	showGitStatuses(cfgs)
+	fmt.Println("")
 }
 
 // Get filename from CLI args, unless you want to use default in home directory.
@@ -43,9 +44,9 @@ func showTableOfCfgs(cfgs Configs) {
 	w.Flush()
 }
 
-var wg sync.WaitGroup
-
 func showGitStatuses(cfgs Configs) {
+	var wg sync.WaitGroup
+
 	for _, cfg := range cfgs {
 		wg.Add(1)
 		go func(cfg Config) {
@@ -53,6 +54,7 @@ func showGitStatuses(cfgs Configs) {
 			wg.Done()
 		}(cfg)
 	}
+
 	wg.Wait()
 }
 
@@ -64,7 +66,7 @@ func gitstatus(cfg Config) {
 	fmt.Printf("%v\n", cfg.Dir)
 
 	if isDirClean(cmdOut) {
-		fmt.Printf("OK\n\n")
+		fmt.Printf("OK\n")
 	} else {
 		fmt.Printf("%v\n", cmdOut)
 	}
@@ -77,15 +79,9 @@ func git(cmd string, dir string) string {
 }
 
 func isDirClean(statusMsg string) bool {
-	sm := flatten(statusMsg)
-
-	return strings.Contains(sm, "nothing to commit") &&
-		strings.Contains(sm, "working") &&
-		strings.Contains(sm, "clean")
-}
-
-func flatten(statusMsg string) string {
-	return strings.Replace(statusMsg, "\n", "", -1)
+	return strings.Contains(statusMsg, "nothing to commit") &&
+		strings.Contains(statusMsg, "working") &&
+		strings.Contains(statusMsg, "clean")
 }
 
 func errFatal(err error) {
@@ -102,6 +98,6 @@ func homeDir() string {
 
 func printMainTitle(str string) {
 	const w80 = "--------------------------------------------------------------------------------"
-	fmt.Printf("%v%v\n%v\n%v\n%v", Green, w80, str, w80, AttrOff)
+	fmt.Printf("%v\n%v\n%v\n%v", Green, str, w80, AttrOff)
 	// fmt.Printf("\n%v\n%v", w80, Nocolor)
 }
