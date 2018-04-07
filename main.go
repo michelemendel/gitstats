@@ -66,9 +66,9 @@ func gitstatus(cfg Config) {
 	fmt.Printf("%v\n", cfg.Dir)
 
 	if isDirClean(cmdOut) {
-		fmt.Printf("%vOK\n%v", Green, AttrOff)
+		fmt.Printf("%vOK\n%v", Ansi.Green, Ansi.AttrOff)
 	} else {
-		fmt.Printf("%vATTENTION\n%v", Red, AttrOff)
+		fmt.Printf("%vATTENTION\n%v", Ansi.Red, Ansi.AttrOff)
 		fmt.Printf("%v\n", cmdOut)
 	}
 }
@@ -99,5 +99,5 @@ func errFatal(err error) {
 
 func printMainTitle(str string) {
 	const w80 = "--------------------------------------------------------------------------------"
-	fmt.Printf("%v\n%v\n%v\n%v", Yellow+Bold, str, w80, AttrOff)
+	fmt.Printf("%v\n%v\n%v\n%v", Ansi.Yellow+Ansi.Bold, str, w80, Ansi.AttrOff)
 }

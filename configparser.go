@@ -67,5 +67,5 @@ func isDir(dirname string) bool {
 }
 
 func printWarning(msg string, obj string) {
-	fmt.Printf("\n%vWARNING: %v (%v).%v", Red, msg, obj, AttrOff)
+	fmt.Printf("\n%vWARNING: %v (%v).%v", Ansi.Red, msg, obj, Ansi.AttrOff)
 }
