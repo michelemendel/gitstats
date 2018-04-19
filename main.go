@@ -17,7 +17,7 @@ type clr struct {
 	c string
 }
 
-const cfgFilenameDefault = "gitststatsdirs.cfg"
+const cfgFilenameDefault = "gitstatsdirs.cfg"
 
 func main() {
 	cfgFilename := getCfgFilename()
@@ -31,6 +31,7 @@ func main() {
 func getCfgFilename() string {
 	filename := flag.String("f", path.Join(homeDir(), cfgFilenameDefault),
 		"You need to provide a config file with -f or empty which will look for default.")
+	fmt.Println("Using config file", *filename)
 	flag.Parse()
 	return *filename
 }

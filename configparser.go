@@ -57,10 +57,10 @@ func getFields(scanner *bufio.Scanner) []string {
 	return strings.Fields(line)
 }
 
-// If dir doesn't exists, don't add it
+// If dir doesn't exist, don't add it
 func isDir(dirname string) bool {
 	if _, err := os.Stat(dirname); err != nil {
-		printWarning("Directory doesn't exists", dirname)
+		printWarning("Directory doesn't exist", dirname)
 		return false
 	}
 	return true
