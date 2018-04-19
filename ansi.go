@@ -1,23 +1,34 @@
 // ANSI Escape Sequences (Codes)
 package main
 
-// Text attributes
-// 0	All attributes off
-// 1	Bold on
-// 4	Underscore (on monochrome display adapter only)
-// 5	Blink on
-// 7	Reverse video on
-// 8	Concealed on
-
-// Foreground colors
-// 30	Black
-// 31	Red
-// 32	Green
-// 33	Yellow
-// 34	Blue
-// 35	Magenta
-// 36	Cyan
-// 37	White
+// Ansi Escape Sequences (Codes)
+var Ansi = struct {
+	// Text Attributes
+	AttrOff, Bold, Underscore, Blink, ReverseVideo, Concealed string
+	// Foreground Color
+	Black, Red, Green, Yellow, Blue, Magenta, Cyan, White string
+	// Background Color
+	BgBlue string
+}{
+	// Text Attributes
+	AttrOff:      "\033[0m",
+	Bold:         "\033[1m",
+	Underscore:   "\033[4m",
+	Blink:        "\033[5m",
+	ReverseVideo: "\033[7m",
+	Concealed:    "\033[8m",
+	// Foreground Color
+	Black:   "\033[30m",
+	Red:     "\033[31m",
+	Green:   "\033[32m",
+	Yellow:  "\033[33m",
+	Blue:    "\033[34m",
+	Magenta: "\033[35m",
+	Cyan:    "\033[36m",
+	White:   "\033[37m",
+	// Background Color
+	BgBlue: "\033[44m",
+}
 
 // Background colors
 // 40	Black
@@ -28,26 +39,3 @@ package main
 // 45	Magenta
 // 46	Cyan
 // 47	White
-
-// Text Attributes
-const (
-	AttrOff      = "\033[0m"
-	Bold         = "\033[1m"
-	Underscore   = "\033[4m"
-	Blink        = "\033[5m"
-	ReverseVideo = "\033[7m"
-	Concealed    = "\033[8m"
-)
-
-// Foreground Color
-const (
-	Red    = "\033[31m"
-	Green  = "\033[32m"
-	Yellow = "\033[33m"
-	Blue   = "\033[34m"
-)
-
-// Background Color
-const (
-	BgBlue = "\033[44m"
-)
